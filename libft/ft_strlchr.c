@@ -1,16 +1,21 @@
 #include "libft.h"
 
-int ft_strlchr(char *str, int symbol)
+int ft_strlchr(const char *str, int symbol, int num_s)
 {
 	int len;
 
 	len = 0;
-	while (str && *str != symbol)
+	if (num_s <= 0)
+		return (0);
+	while (num_s > 0)
 	{
-		str++;
+		while (str[len] && str[len] != symbol)
+			len++;
+		num_s--;
 		len++;
 	}
-	if (*str != symbol)
+	len--;
+	if (str[len] != symbol)
 		return (0);
 	return (len);
 }

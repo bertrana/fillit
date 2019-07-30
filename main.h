@@ -13,7 +13,6 @@
 
 typedef struct 		s_tetr
 {
-	char 			*start;
 	int 			sec;
 	int 			third;
 	int 			four;
