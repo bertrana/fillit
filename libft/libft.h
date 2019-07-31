@@ -84,5 +84,6 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int					ft_strnchr(const char *str, int symbol);
 t_list				*ft_lstradd(t_list *alst, t_list *new);
 int					ft_strlchr(const char *str, int symbol, int num_s);
+int					ft_lstlen(t_list *lst);
 
 #endif

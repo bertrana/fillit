@@ -19,6 +19,7 @@ typedef struct 		s_tetr
 	struct s_tetr	*next;
 }					t_tetr;
 
-int 				tetr_read(int fd, t_tetr *list);
+t_tetr				*ft_fileread(int fd, t_tetr *list);
+t_tetr				*ft_lstaddtetr(t_tetr *list, const char *str);
 
 #endif
