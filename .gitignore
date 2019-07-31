@@ -1,5 +1,6 @@
 
 CMakeLists.txt
+.idea
 .idea/fillit.iml
 .idea/misc.xml
 .idea/modules.xml
