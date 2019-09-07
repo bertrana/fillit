@@ -1,82 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/23 10:36:35 by yjohns            #+#    #+#             */
-/*   Updated: 2019/06/30 19:51:47 by yjohns           ###   ########.fr       */
+/*   Created: 2019/06/29 14:59:34 by yjohns            #+#    #+#             */
+/*   Updated: 2019/06/30 19:48:46 by yjohns           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "libft.h"
 
-static int		length(int n)
+static int		ft_get_len(int n)
 {
-	int		i;
+	int		len;
+	int		minus;
 
-	i = 1;
+	minus = 0;
+	len = 1;
 	if (n < 0)
 	{
-		n = -n;
-		i++;
+		n *= -1;
+		minus = 1;
 	}
-	while (n > 9)
-	{
-		n /= 10;
-		i++;
-	}
-	i++;
-	return (i);
+	while ((n /= 10) > 0)
+		len++;
+	return ((minus) ? len + 1 : len);
 }
 
-static char		*do_str(int len, int n)
+static int		ft_get_tens(int n)
 {
-	int		i;
-	char	*str;
+	int tens;
 
-	i = 0;
-	if (n < 0)
-	{
-		i = 1;
-		if (!(str = (char*)malloc(len)))
-			return (0);
-		str[0] = '-';
-		n = -n;
-	}
-	else
-	{
-		if (!(str = (char*)malloc(len)))
-			return (0);
-	}
-	while (n > 9 && len > i)
-	{
-		len--;
-		str[len - 1] = (n % 10) + 48;
-		n = n / 10;
-	}
-	str[len - 2] = (n % 10) + 48;
-	return (str);
+	tens = 1;
+	while ((n /= 10) > 0)
+		tens *= 10;
+	return (tens);
 }
 
 char			*ft_itoa(int n)
 {
-	char	*str;
+	int		tens;
 	int		i;
+	char	*ptr;
 
 	i = 0;
-	if (n != -2147483648)
+	if (!(ptr = ft_strnew(ft_get_len(n))))
+		return (NULL);
+	if (n < 0)
 	{
-		i = length(n);
-		if (!(str = do_str(i, n)))
-			return (NULL);
-		str[i - 1] = '\0';
-		return (str);
+		ptr[i++] = '-';
+		if (n == -2147483648)
+			ptr[i++] = '2';
+		if (n == -2147483648)
+			n = -147483648;
+		n = -n;
 	}
-	if (!(str = (char*)malloc(13)))
-		return (0);
-	str = "-2147483648\0";
-	return (str);
+	tens = ft_get_tens(n);
+	while (tens)
+	{
+		ptr[i++] = ((char)(n / tens) + 48);
+		n %= tens;
+		tens /= 10;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }
