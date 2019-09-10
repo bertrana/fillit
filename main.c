@@ -1,39 +1,49 @@
-#include "main.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ialleen <ialleen@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/09 22:02:17 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/10 14:48:13 by ialleen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int		ft_lsttlen(t_tetr *lst)
+#include "fillit.h"
+#include <stdio.h>
+
+void		ft_exit(void)
 {
-	int	i;
-
-	i = 0;
-	while (lst)
-	{
-		i++;
-		lst = lst->next;
-	}
-	return (i);
+	ft_putstr_fd("error\n", 2);
+	exit(EXIT_FAILURE);
 }
 
-void	algorithm(t_tetr *list)
-{
-	int		len;
-
-	len = ft_lsttlen(list);
-	printf("len of list = %d", len);
-	return ;
-}
-
-int		main(int argv, char **argc)
+int			main(int argc, char *argv[])
 {
 	int		fd;
-	t_tetr	*list;
+	t_tet	*lines;
 
-	list = NULL;
-	if (argv != 2)
-		return (-1); //EXIT
-	if ((fd = open(argc[1], O_RDONLY)) < 3 || !(list = ft_fileread(fd, list)))
-		return (-1); //EXIT
-	algorithm(list);
-	//write to file
-	//delete list & matr
+	if (argc != 2)
+		ft_exit();
+	else if (argc == 2)
+	{
+		if ((fd = open(argv[1], O_RDONLY)) < 0)
+			ft_exit();
+		else if (fd > 0)
+		{
+			if ((lines = validation(fd, argv[1])))
+			{
+				while (lines)
+				{
+					printf("%c\t%d\n", lines->id, lines->fig);
+					lines = lines->next;
+				}
+			}
+			else
+				ft_exit();
+		}
+		close(fd);
+	}
 	return (0);
 }

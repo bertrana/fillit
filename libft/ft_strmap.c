@@ -3,35 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/23 10:38:08 by yjohns            #+#    #+#             */
-/*   Updated: 2019/06/24 15:46:16 by yjohns           ###   ########.fr       */
+/*   Created: 2019/09/03 16:39:31 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/05 17:34:04 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
+#include <stdlib.h>
 
-char	*ft_strmap(char const *s, char (*f)(char))
+char		*ft_strmap(char const *s, char (*f)(char))
 {
-	size_t	i;
-	size_t	j;
 	char	*str;
+	size_t	len;
+	char	*map;
 
-	i = 0;
-	j = 0;
-	i = ft_strlen(s);
-	str = (char *)malloc(i + 1);
-	if (str && s && f)
-	{
-		while (j < i)
-		{
-			str[j] = f(s[j]);
-			j++;
-		}
-		str[j] = '\0';
-		return (str);
-	}
-	return (NULL);
+	if (!s || !f)
+		return (NULL);
+	len = ft_strlen(s);
+	if (len + 1 < len)
+		return (NULL);
+	if (!(str = (char *)malloc(sizeof(char) * len + 1)))
+		return (NULL);
+	map = str;
+	while (*s)
+		*str++ = f(*s++);
+	*str = '\0';
+	return (map);
 }

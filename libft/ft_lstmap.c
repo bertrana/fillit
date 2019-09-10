@@ -3,31 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/28 17:26:30 by yjohns            #+#    #+#             */
-/*   Updated: 2019/08/29 20:39:55 by yjohns           ###   ########.fr       */
+/*   Created: 2019/09/03 21:07:35 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/05 11:24:49 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list	*tmp;
-	t_list	*begin;
+	t_list	*node;
 
-	if (!lst)
-		return (NULL);
-	begin = f(lst);
-	lst = lst->next;
-	tmp = begin;
-	while (lst)
+	if (f && *f && lst)
 	{
-		if (!(tmp->next = f(lst)))
+		if (!(node = (t_list *)malloc(sizeof(t_list))))
 			return (NULL);
-		tmp = tmp->next;
-		lst = lst->next;
+		node = f(lst);
+		node->next = ft_lstmap(lst->next, *f);
+		return (node);
 	}
-	return (begin);
+	return (NULL);
 }

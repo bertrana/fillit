@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_isdel.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/28 17:26:13 by yjohns            #+#    #+#             */
-/*   Updated: 2019/08/28 17:27:48 by yjohns           ###   ########.fr       */
+/*   Created: 2019/09/03 20:52:10 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/05 11:22:37 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+void		ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 {
-	t_list	*tmp;
-	t_list	*first;
+	t_list	*node;
+	t_list	*next;
 
-	first = *alst;
-	if (alst && *alst != NULL)
+	if (del && alst && *alst)
 	{
-		while (*alst)
+		node = *alst;
+		while (node)
 		{
-			tmp = (*alst)->next;
-			del((*alst)->content, (*alst)->content_size);
-			free(*alst);
-			*alst = tmp;
+			next = node->next;
+			del(node->content, node->content_size);
+			free(node);
+			node = next;
 		}
-		*alst = NULL;
 	}
+	*alst = NULL;
 }

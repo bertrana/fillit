@@ -3,34 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/23 10:38:34 by yjohns            #+#    #+#             */
-/*   Updated: 2019/06/27 16:51:32 by yjohns           ###   ########.fr       */
+/*   Created: 2019/09/03 17:27:53 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/04 14:22:02 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+#include "libft.h"
 
-char	*ft_strtrim(char const *s)
+static int	ft_whitespaces(int c)
 {
-	size_t	i;
-	size_t	j;
+	return (c == ' ' || c == '\n' || c == '\t');
+}
+
+char		*ft_strtrim(char const *s)
+{
+	int		st;
+	int		nd;
 	char	*str;
 
-	j = 0;
-	if (!(i = ft_strlen(s) - 1) || !s)
+	if (!s)
 		return (NULL);
-	while ((s[i] == ' ' || s[i] == '\n' || s[i] == '\t') && s[i] && i)
-		i--;
-	if (!i)
-		return (ft_strnew(1));
-	while ((s[j] == ' ' || s[j] == '\n' || s[j] == '\t') && s[j])
-		j++;
-	if (i == j - 1)
-		return ((char *)s);
-	if (!(str = ft_strsub(s, j, i - j + 1)))
+	st = 0;
+	nd = 0;
+	while (s[st] && ft_whitespaces(s[st]))
+		st++;
+	nd = ft_strlen(&s[st]) - 1;
+	while (s[st] && ft_whitespaces(s[st + nd]))
+		nd--;
+	if (!(str = ft_strnew(nd + 1)))
 		return (NULL);
+	ft_strncpy(str, s + st, nd + 1);
 	return (str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/29 12:31:11 by yjohns            #+#    #+#             */
-/*   Updated: 2019/06/30 19:39:34 by yjohns           ###   ########.fr       */
+/*   Created: 2019/09/02 21:10:52 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/03 14:00:55 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,29 @@
 
 size_t		ft_strlcat(char *dst, const char *src, size_t size)
 {
-	size_t	i;
+	char	*cdst;
+	char	*csrc;
+	size_t	n;
+	size_t	dlen;
 
-	i = ft_strlen(dst);
-	if (size < ft_strlen(dst) + 1)
-		return (ft_strlen(src) + size);
-	while (i < size - 1 && *src)
+	n = size;
+	cdst = dst;
+	csrc = (char *)src;
+	while (n-- > 0 && *cdst)
+		cdst++;
+	dlen = cdst - dst;
+	n = size - dlen;
+	if (n == 0)
+		return (dlen + ft_strlen(csrc));
+	while (*csrc)
 	{
-		dst[i] = *src;
-		i++;
-		src++;
+		if (n != 1)
+		{
+			*cdst++ = *csrc;
+			n--;
+		}
+		csrc++;
 	}
-	dst[i] = '\0';
-	return (ft_strlen(src) + ft_strlen(dst));
+	*cdst = '\0';
+	return (dlen + (csrc - src));
 }

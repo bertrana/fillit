@@ -3,42 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/29 16:52:21 by yjohns            #+#    #+#             */
-/*   Updated: 2019/06/30 19:52:04 by yjohns           ###   ########.fr       */
+/*   Created: 2019/09/03 15:37:38 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/05 10:56:05 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	find_number(const char **str)
-{
-	int	min;
-
-	min = 1;
-	while ((**str == ' ' || (**str < 14 && **str > 8)) && **str)
-		(*str)++;
-	if (**str == '-' || **str == '+')
-	{
-		if (**str == '-')
-			min = -1;
-		(*str)++;
-	}
-	return (min);
-}
-
 int			ft_atoi(const char *str)
 {
-	int	i;
-	int	min;
+	long	res;
+	int		sign;
+	int		any;
 
-	min = find_number(&str);
-	i = 0;
-	while (*str >= '0' && *str <= '9' && *str)
-	{
-		i = i * 10 + (*str - '0') * min;
+	any = 0;
+	sign = 0;
+	res = 0;
+	while (*str && ft_isspace(*str))
 		str++;
-	}
-	return (i);
+	if (*str == '-')
+		sign++;
+	if (*str == '-' || *str == '+')
+		str++;
+	str--;
+	while (*(++str) && ft_isdigit(*str))
+		if (any < 0 || res > LONG_MAX / 10 ||
+				(res == LONG_MAX / 10 && (*str - '0') > LONG_MAX % 10))
+			any = -1;
+		else
+			res = res * 10 + (*str - '0');
+	if (any < 0)
+		res = (!sign) ? -1 : 0;
+	else
+		res = ((sign) ? -res : res);
+	return (res);
 }

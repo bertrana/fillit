@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/29 14:59:34 by yjohns            #+#    #+#             */
-/*   Updated: 2019/06/30 19:48:46 by yjohns           ###   ########.fr       */
+/*   Created: 2019/09/03 17:21:46 by ialleen           #+#    #+#             */
+/*   Updated: 2019/09/05 17:28:03 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char		*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*join_str;
-	size_t	i;
-	size_t	j;
+	size_t	len;
+	char	*str;
 	size_t	len1;
 	size_t	len2;
 
-	if (s1 && s2)
-	{
-		len1 = ft_strlen(s1);
-		len2 = ft_strlen(s2);
-		i = -1;
-		j = 0;
-		if (!(join_str = (char *)malloc(sizeof(char) * len1 + len2 + 1)))
-			return (NULL);
-		while (++i < len1)
-			join_str[i] = s1[i];
-		while (j < len2)
-			join_str[i++] = s2[j++];
-		join_str[i] = '\0';
-		return (join_str);
-	}
-	return (NULL);
+	if (!s1 || !s2)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	len = len1 + len2;
+	if (len + 1 < len)
+		return (NULL);
+	if (!(str = (char *)malloc(sizeof(char) * len + 1)))
+		return (NULL);
+	while (*s1)
+		*str++ = *s1++;
+	ft_strcpy(str, s2);
+	return (str - len1);
 }
