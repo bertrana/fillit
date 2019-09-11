@@ -41,8 +41,10 @@ typedef struct		s_tet
 	int				fig;
 	int             x;
 	int             y;
+	int             max_x;
+	int             max_y;
 	int             min_square;
-	int             **matr;
+	int             *matr;
 	struct s_tet	*next;
 }					t_tet;
 

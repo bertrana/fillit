@@ -79,6 +79,7 @@ t_tet		*validation(int fd, char *file)
 		}
 		if (!(a = check_tetramino(a >> 1)))
 			ft_exit();
+
 		!head ? head = tetnew(id++, a) : tetadd(&head, tetnew(id++, a));
 	}
 	free(mas);

@@ -13,68 +13,91 @@
 #include "fillit.h"
 #include <stdio.h>
 
-void	print_square_matr(int **matr, int size)
+void	print_square_matr(t_tet *fig, int size)
 {
 	int i;
 	int j;
+    int a;
 
 	i = 0;
 	while (i <= size)
 	{
-		j = 0;
-		while (j <= size)
-		{
-			printf("%d", matr[i][j]);
-			j++;
-		}
-		printf("\n");
+	    j = 0;
+        a = fig->matr[i];
+	    while (j < size)
+	    {
+	        if (a & 0x8000000000)
+                ft_putchar('#');
+	        else
+                ft_putchar('.');
+	        a = a << 1;
+            j++;
+        }
+        ft_putchar('\n');
 		i++;
 	}
+    ft_putchar('\n');
 }
 
 
-int		**bit_to_matr(int square, int fig)
+void	bit_to_matr(t_tet *fig)
 {
-	//может надо сделать динамическое выделение памяти? Хотя не особо понятно зачем
-	int matr[square][square];
-	int	i;
-	int j;
+	int *matr;
+	int	a;
+	int i;
+	int b;
 
-	i = square - 1;
-	//убираем лишние битовые строчки, одна у фигуры шириной 3 и две у квадрата
-	if (square == 3)
-		fig = fig >> 4;
-	else if (square == 2)
-		fig = fig >> 8;
-	while (i >= 0)
-	{
-		//чтобы не записывать в матрицу лишние символы, считываем только наш квадрат
-		//т.е "обрезаем" лишние элементы строки (2, 1, или 0)
-		fig = fig >> (4 - square);
-		j = square - 1;
-		while (j >= 0)
-		{
-			//вот здесь, скорее всего, основной косяк: в матрицу не записываются числа.
-			//вообще никакие. Хотя, возможно, это потому что под матрицу не выделена память? хз
-			matr[i][j] = ((fig >> 1 & 1) ? 1 : 0);
-			fig = fig >> 1;
-			j--;
-		}
-		i--;
-	}
-	print_square_matr(matr, square - 1);
-	return (matr);
-}
-
-void    map(t_tet *l_tetr)
-{
-	t_tet	*begin;
-
-	begin = l_tetr;
-    while(l_tetr->next)
-    {
-    	l_tetr->matr = bit_to_matr(l_tetr->min_square, l_tetr->fig);
-        l_tetr = l_tetr->next;
+	i = 0;
+	b = 0;
+    a = fig->fig;
+	a = a << 16;
+	i = 0;
+    matr = (int *)malloc(sizeof(int) * 32);
+	while (i < 32) {
+        if (i < 4)
+        {
+            matr[i] = a & 0xF0000000;
+            a = a << 4;
+        }
+	    i++;
     }
-    l_tetr = begin;
+	fig->matr = matr;
 }
+
+void    start_data(t_tet *head)
+{
+    int a;
+
+    head->x = 0;
+    head->y = 0;
+    a = head->fig;
+    if (a == F_ZR || a == F_ZL || a == F_GL_U || a == F_GL_D ||
+        a == F_GR_U || a == F_GR_D || a == F_T_U || a == F_T_D)
+    {
+        head->max_x = 3;
+        head->max_y = 2;
+    }
+    else if (a == F_BLOCK && (head->max_x = 2))
+        head->max_y = 2;
+    else if (a == F_LINE_L && (head->max_x = 1))
+        head->max_y = 4;
+    else if (a == F_LINE_U && (head->max_x = 4))
+        head->max_y = 1;
+    else if ((head->max_x = 2))
+        head->max_y = 3;
+}
+
+void map(t_tet *head)
+{
+    int a;
+
+    while (head)
+    {
+        a = head->fig;
+        start_data(head);
+        bit_to_matr(head);
+        print_square_matr(head, 5);
+        head = head->next;
+    }
+}
+
