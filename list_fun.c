@@ -30,6 +30,12 @@ t_tet		*tetnew(int id, int a)
 		return (NULL);
 	node->id = id;
 	node->fig = a;
+	if (a == F_LINE_L || a == F_LINE_U)
+	    node->min_square = 4;
+	else if (a == F_BLOCK)
+	    node->min_square = 2;
+	else
+	    node->min_square = 3;
 	node->next = NULL;
 	return (node);
 }

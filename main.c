@@ -34,6 +34,7 @@ int			main(int argc, char *argv[])
 		{
 			if ((lines = validation(fd, argv[1])))
 			{
+			    map(lines);
 				while (lines)
 				{
 					printf("%c\t%d\n", lines->id, lines->fig);
