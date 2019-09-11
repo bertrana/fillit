@@ -6,7 +6,7 @@
 /*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 21:58:54 by ialleen           #+#    #+#             */
-/*   Updated: 2019/09/10 14:53:28 by ialleen          ###   ########.fr       */
+/*   Updated: 2019/09/11 09:35:12 by yjohns           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ typedef struct		s_tet
 {
 	char			id;
 	int				fig;
+	int             x;
+	int             y;
+	int             min_square;
+	int             **matr;
 	struct s_tet	*next;
 }					t_tet;
 
@@ -48,4 +52,6 @@ void				ft_exit(void);
 void				tetadd(t_tet **alst, t_tet *new);
 t_tet				*tetnew(int id, int a);
 void				tetclr(t_tet **lst);
+void                map(t_tet *l_tetr);
+
 #endif
