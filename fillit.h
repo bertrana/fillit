@@ -6,7 +6,7 @@
 /*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 21:58:54 by ialleen           #+#    #+#             */
-/*   Updated: 2019/09/12 14:37:14 by ialleen          ###   ########.fr       */
+/*   Updated: 2019/09/12 15:43:57 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@
 # define F_BLOCK	52224
 # define F_LINE_U	61440
 # define F_LINE_L	34952
-
+# define SIZE_TET	4
+# define MAX_ROW	32
 typedef struct		s_tet
 {
 	char			id;
@@ -44,15 +45,15 @@ typedef struct		s_tet
 	unsigned		width;
 	unsigned		height;
 	unsigned        max_w_h;
-	unsigned        *matr;
+	unsigned        matr[MAX_ROW];
 	struct s_tet	*next;
 }					t_tet;
 
 int					validation_1(const int fd);
-t_tet				*validation(int fd, char *file);
+t_tet				*validation(char fd, char *file);
 void				ft_exit(void);
 void				tetadd(t_tet **alst, t_tet *new);
-t_tet				*tetnew(int id, unsigned a);
+t_tet				*tetnew(char id, unsigned a, unsigned size);
 void				tetclr(t_tet **lst);
 void                map(t_tet *l_tetr);
 int					sdvig_left(t_tet *tet);

@@ -6,7 +6,7 @@
 /*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:51:02 by yjohns            #+#    #+#             */
-/*   Updated: 2019/09/12 14:40:38 by ialleen          ###   ########.fr       */
+/*   Updated: 2019/09/12 15:43:57 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_square_matr(t_tet *fig, int size)
 	unsigned a;
 
 	i = 0;
-	while (i <= size)
+	while (i < size)
 	{
 	    j = 0;
         a = fig->matr[i];
@@ -42,7 +42,7 @@ void	print_square_matr(t_tet *fig, int size)
 
 void	bit_to_matr(t_tet *fig)
 {
-	unsigned *matr;
+
 	unsigned	a;
 	unsigned i;
 	unsigned b;
@@ -52,16 +52,14 @@ void	bit_to_matr(t_tet *fig)
     a = fig->fig;
 	a = a << 16;
 	i = 0;
-    matr = (unsigned *)malloc(sizeof(unsigned) * 32);
-	while (i < 32) {
+	while (i < MAX_ROW) {
         if (i < 4)
         {
-            matr[i] = a & 0xF0000000;
+			fig->matr[i] = a & 0xF0000000;
             a = a << 4;
         }
 	    i++;
     }
-	fig->matr = matr;
 }
 
 void    start_data(t_tet *head)
@@ -112,7 +110,7 @@ int sdvig_down(t_tet *tet)
 
 	j = tet->y;
 	y = tet->y + tet->height;
-	if (y > tet->max_w_h)
+	if (y > tet->max_w_h - 1)
 		return (0);
 	while (j <= y)
 	{
@@ -127,23 +125,19 @@ int sdvig_down(t_tet *tet)
 
 int 	compare_tet(t_tet *tet1, t_tet *tet2)
 {
-	int y1;
-	int y2;
-	int j_min;
-	int j_max;
+	unsigned y1;
+	unsigned y2;
 	int a;
 
 	a = 0;
 	y1 = tet1->y;
 	y2 = tet2->y;
-	j_min = (y1 > y2) ? y2 : y1;
-	j_max = (y1 > y2) ? y1 : y2;
-	while (j_min <= j_max)
+	while (y1 < tet1->y + tet1->height)
 	{
-		a = ((tet1->fig & tet2->fig) == 0) ? 1 : 0;
+		a = ((tet1->matr[y1++] & tet2->matr[y2++]) == 0) ? 1 : 0;
 		if (a)
 			return (0);
-		j_min++;
+
 	}
 	return (1);
 }
@@ -151,13 +145,25 @@ int 	compare_tet(t_tet *tet1, t_tet *tet2)
 void map(t_tet *head)
 {
     unsigned a;
+    t_tet *tet;
 
+    tet = head;
     while (head)
     {
         a = head->fig;
         start_data(head);
         bit_to_matr(head);
-        print_square_matr(head, head->max_w_h);
+
+        a = 1;
+        while (a)
+		{
+			print_square_matr(head, head->max_w_h);
+        	while (sdvig_right(head))
+				print_square_matr(head, head->max_w_h);
+			sdvig_left(head);
+        	a = sdvig_down(head);
+		}
+        //print_square_matr(head, head->max_w_h);
         head = head->next;
     }
 }

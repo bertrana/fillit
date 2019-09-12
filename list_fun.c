@@ -6,7 +6,7 @@
 /*   By: ialleen <ialleen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 21:49:51 by ialleen           #+#    #+#             */
-/*   Updated: 2019/09/12 10:55:36 by ialleen          ###   ########.fr       */
+/*   Updated: 2019/09/12 15:25:35 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	tetadd(t_tet **alst, t_tet *new)
 	}
 }
 
-t_tet		*tetnew(int id, unsigned a)
+t_tet		*tetnew(char id, unsigned a, unsigned size)
 {
 	t_tet	*node;
 	char	*cont;
@@ -31,7 +31,7 @@ t_tet		*tetnew(int id, unsigned a)
 	node->id = id;
 	node->fig = a;
 	node->next = NULL;
-	node->max_w_h = 4;
+	node->max_w_h = size;
 	return (node);
 }
 
