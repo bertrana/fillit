@@ -6,7 +6,7 @@
 /*   By: yjohns <yjohns@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:51:02 by yjohns            #+#    #+#             */
-/*   Updated: 2019/09/11 10:52:44 by yjohns           ###   ########.fr       */
+/*   Updated: 2019/09/12 14:40:38 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 void	print_square_matr(t_tet *fig, int size)
 {
-	int i;
-	int j;
-    int a;
+	unsigned i;
+	unsigned j;
+	unsigned a;
 
 	i = 0;
 	while (i <= size)
@@ -26,7 +26,7 @@ void	print_square_matr(t_tet *fig, int size)
         a = fig->matr[i];
 	    while (j < size)
 	    {
-	        if (a & 0x8000000000)
+	        if (a & 0x80000000)
                 ft_putchar('#');
 	        else
                 ft_putchar('.');
@@ -42,17 +42,17 @@ void	print_square_matr(t_tet *fig, int size)
 
 void	bit_to_matr(t_tet *fig)
 {
-	int *matr;
-	int	a;
-	int i;
-	int b;
+	unsigned *matr;
+	unsigned	a;
+	unsigned i;
+	unsigned b;
 
 	i = 0;
 	b = 0;
     a = fig->fig;
 	a = a << 16;
 	i = 0;
-    matr = (int *)malloc(sizeof(int) * 32);
+    matr = (unsigned *)malloc(sizeof(unsigned) * 32);
 	while (i < 32) {
         if (i < 4)
         {
@@ -71,32 +71,93 @@ void    start_data(t_tet *head)
     head->x = 0;
     head->y = 0;
     a = head->fig;
-    if (a == F_ZR || a == F_ZL || a == F_GL_U || a == F_GL_D ||
+    if (a == F_ZR_ROT || a == F_ZL_ROT || a == F_GL_U || a == F_GL_D ||
         a == F_GR_U || a == F_GR_D || a == F_T_U || a == F_T_D)
     {
-        head->max_x = 3;
-        head->max_y = 2;
+        head->width = 3;
+        head->height = 2;
     }
-    else if (a == F_BLOCK && (head->max_x = 2))
-        head->max_y = 2;
-    else if (a == F_LINE_L && (head->max_x = 1))
-        head->max_y = 4;
-    else if (a == F_LINE_U && (head->max_x = 4))
-        head->max_y = 1;
-    else if ((head->max_x = 2))
-        head->max_y = 3;
+    else if (a == F_BLOCK && (head->width = 2))
+        head->height = 2;
+    else if (a == F_LINE_L && (head->width = 1))
+        head->height = 4;
+    else if (a == F_LINE_U && (head->width = 4))
+        head->height = 1;
+    else if ((head->width = 2))
+        head->height = 3;
+}
+int sdvig_right(t_tet *tet)
+{
+	unsigned j;
+	unsigned y;
+
+	j = tet->y;
+
+	y = j + tet->height;
+	if (tet->x + tet->width >= tet->max_w_h)
+		return (0);
+	while (j <= y)
+	{
+		tet->matr[j] = (tet->matr[j]) >> 1;
+		j++;
+	}
+	(tet->x)++;
+	return (1);
+}
+
+int sdvig_down(t_tet *tet)
+{
+	int j;
+	int y;
+
+	j = tet->y;
+	y = tet->y + tet->height;
+	if (y > tet->max_w_h)
+		return (0);
+	while (j <= y)
+	{
+		tet->matr[y] = tet->matr[y - 1];
+		y--;
+	}
+
+	tet->matr[tet->y] = 0;
+	(tet->y)++;
+	return (1);
+}
+
+int 	compare_tet(t_tet *tet1, t_tet *tet2)
+{
+	int y1;
+	int y2;
+	int j_min;
+	int j_max;
+	int a;
+
+	a = 0;
+	y1 = tet1->y;
+	y2 = tet2->y;
+	j_min = (y1 > y2) ? y2 : y1;
+	j_max = (y1 > y2) ? y1 : y2;
+	while (j_min <= j_max)
+	{
+		a = ((tet1->fig & tet2->fig) == 0) ? 1 : 0;
+		if (a)
+			return (0);
+		j_min++;
+	}
+	return (1);
 }
 
 void map(t_tet *head)
 {
-    int a;
+    unsigned a;
 
     while (head)
     {
         a = head->fig;
         start_data(head);
         bit_to_matr(head);
-        print_square_matr(head, 5);
+        print_square_matr(head, head->max_w_h);
         head = head->next;
     }
 }

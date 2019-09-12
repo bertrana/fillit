@@ -6,7 +6,7 @@
 /*   By: ialleen <ialleen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 22:02:17 by ialleen           #+#    #+#             */
-/*   Updated: 2019/09/10 14:48:13 by ialleen          ###   ########.fr       */
+/*   Updated: 2019/09/12 10:59:25 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ int			main(int argc, char *argv[])
 			ft_exit();
 		else if (fd > 0)
 		{
+
 			if ((lines = validation(fd, argv[1])))
 			{
-			    map(lines);
+				map(lines);
 				while (lines)
 				{
 					printf("%c\t%d\n", lines->id, lines->fig);

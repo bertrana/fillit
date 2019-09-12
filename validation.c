@@ -6,7 +6,7 @@
 /*   By: ialleen <ialleen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 20:50:13 by ialleen           #+#    #+#             */
-/*   Updated: 2019/09/09 21:49:41 by ialleen          ###   ########.fr       */
+/*   Updated: 2019/09/12 10:55:36 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ t_tet		*validation(int fd, char *file)
 		}
 		if (!(a = check_tetramino(a >> 1)))
 			ft_exit();
-
 		!head ? head = tetnew(id++, a) : tetadd(&head, tetnew(id++, a));
 	}
 	free(mas);

@@ -6,7 +6,7 @@
 /*   By: ialleen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 21:58:54 by ialleen           #+#    #+#             */
-/*   Updated: 2019/09/11 09:35:12 by yjohns           ###   ########.fr       */
+/*   Updated: 2019/09/12 14:37:14 by ialleen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@
 typedef struct		s_tet
 {
 	char			id;
-	int				fig;
-	int             x;
-	int             y;
-	int             max_x;
-	int             max_y;
-	int             min_square;
-	int             *matr;
+	unsigned		fig;
+	unsigned		x;
+	unsigned		y;
+	unsigned		width;
+	unsigned		height;
+	unsigned        max_w_h;
+	unsigned        *matr;
 	struct s_tet	*next;
 }					t_tet;
 
@@ -52,8 +52,11 @@ int					validation_1(const int fd);
 t_tet				*validation(int fd, char *file);
 void				ft_exit(void);
 void				tetadd(t_tet **alst, t_tet *new);
-t_tet				*tetnew(int id, int a);
+t_tet				*tetnew(int id, unsigned a);
 void				tetclr(t_tet **lst);
 void                map(t_tet *l_tetr);
-
+int					sdvig_left(t_tet *tet);
+int					sdvig_up(t_tet *tet);
+int					zero(t_tet *tet);
+int					end_pos(t_tet *tet);
 #endif
